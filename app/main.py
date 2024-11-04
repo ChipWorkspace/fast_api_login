@@ -1,12 +1,11 @@
 import os
-from typing import Annotated, List, Union
 from dotenv import load_dotenv
 
 
 # Load .env
 load_dotenv()
 
-from fastapi import Depends, FastAPI, APIRouter, HTTPException
+from fastapi import Depends, FastAPI
 from fastapi.middleware import Middleware
 from starlette.middleware.sessions import SessionMiddleware
 

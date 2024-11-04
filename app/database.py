@@ -1,6 +1,6 @@
 import os
 
-from typing import Annotated, AsyncGenerator
+from typing import Annotated
 
 from fastapi import Depends
 from sqlmodel import Session, create_engine
