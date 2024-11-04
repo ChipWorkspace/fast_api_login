@@ -18,7 +18,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ.get("ACCESS_TOKEN_EXPIRE_MINUTES"))
 ACCESS_TOKEN_REFRESH_MINUTES = int(os.environ.get("ACCESS_TOKEN_REFRESH_MINUTES"))
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/token")
 
 
 def get_expiration_time(
@@ -45,10 +45,7 @@ def create_access_token(
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
-def refresh_token_expiration(
-    token: Token,
-    expires_delta: timedelta | None = None,
-):
+def refresh_token_expiration(token: Token):
     token_data = decode_token(token)
     expire_delta = timedelta(minutes=ACCESS_TOKEN_REFRESH_MINUTES)
     return create_access_token(token_data, expire_delta)

@@ -1,5 +1,7 @@
-from datetime import timedelta
 from typing import Annotated
+from datetime import timedelta
+
+from jwt import ExpiredSignatureError
 
 from fastapi import APIRouter, Form, HTTPException, Depends, status, Request
 from fastapi.security import OAuth2PasswordRequestForm
@@ -37,8 +39,28 @@ async def login(
     return Token(access_token=access_token, token_type="bearer")
 
 
+@router.post("/token/refresh")
+async def refresh_token(
+    request: Request,
+    token: Annotated[Token, Depends(token_utils.oauth2_scheme)],
+):
+    try:
+        new_token = token_utils.refresh_token_expiration(token)
+
+    except ExpiredSignatureError:
+        raise HTTPException(
+            status.HTTP_401_UNAUTHORIZED,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    return new_token
+
+
 @router.post("/logout")
-async def logout(request: Request):
+async def logout(
+    request: Request,
+    token: Annotated[Token, Depends(token_utils.oauth2_scheme)],
+):
     pass
 
 
