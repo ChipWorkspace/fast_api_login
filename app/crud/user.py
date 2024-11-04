@@ -3,7 +3,7 @@ from typing import Annotated
 from multimethod import multimethod
 
 from fastapi import Form, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm
 
 from sqlmodel import select
 
